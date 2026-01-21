@@ -30,7 +30,7 @@ def login(user: schemas.UserLogin, response: Response, db: Session=Depends(get_d
     if not authenticated:
         raise HTTPException(status_code=401)
     if authenticated:
-        session_id = sessions.create_session(user_from_db.id)
+        session_id = sessions.create_session(db, user_from_db.id)
 
     response.set_cookie(
         key="session_id",
@@ -38,4 +38,12 @@ def login(user: schemas.UserLogin, response: Response, db: Session=Depends(get_d
         httponly=True, 
         max_age=3600
     )
+
+    response.set_cookie(
+        key="chocolate_chip",
+        value="yes please",
+        httponly=True, 
+        max_age=3600
+    )
+
     return {"message": "Loggin in successfully"}
